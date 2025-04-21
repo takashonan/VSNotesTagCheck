@@ -77,7 +77,7 @@ def main(folder_path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python vsnotetagcheck.py <folder_path>")
+        print("Usage: python tagcheck.py <folder_path>")
     else:
         folder_path = sys.argv[1]
         main(folder_path)
