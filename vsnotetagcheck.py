@@ -1,4 +1,5 @@
 import os
+import sys
 
 def check_vsnote_header(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -51,27 +52,32 @@ def check_vsnote_header(file_path):
     
     return True
 
-# Path to the folder
-folder_path = r'YOUR FOLDER PATH HERE'
+def main(folder_path):
+    # List to store files that do not follow the rule
+    invalid_files = []
 
-# List to store files that do not follow the rule
-invalid_files = []
+    # Iterate over all files in the folder
+    for file_name in os.listdir(folder_path):
+        # Skip files and folders that start with '.'
+        if file_name.startswith('.'):
+            continue
+        
+        file_path = os.path.join(folder_path, file_name)
+        
+        # Check if it is a file
+        if os.path.isfile(file_path):
+            # Check if the file follows the rule
+            if not check_vsnote_header(file_path):
+                invalid_files.append(file_name)
 
-# Iterate over all files in the folder
-for file_name in os.listdir(folder_path):
-    # Skip files and folders that start with '.'
-    if file_name.startswith('.'):
-        continue
-    
-    file_path = os.path.join(folder_path, file_name)
-    
-    # Check if it is a file
-    if os.path.isfile(file_path):
-        # Check if the file follows the rule
-        if not check_vsnote_header(file_path):
-            invalid_files.append(file_name)
+    # Print the invalid files
+    print("Files that do not follow the rule:")
+    for file_name in invalid_files:
+        print(file_name)
 
-# Print the invalid files
-print("Files that do not follow the rule:")
-for file_name in invalid_files:
-    print(file_name)
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python vsnotetagcheck.py <folder_path>")
+    else:
+        folder_path = sys.argv[1]
+        main(folder_path)
